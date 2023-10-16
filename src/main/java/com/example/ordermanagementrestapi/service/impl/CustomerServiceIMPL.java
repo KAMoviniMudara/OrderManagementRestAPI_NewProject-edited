@@ -61,8 +61,6 @@ public class CustomerServiceIMPL implements CustomerService {
             System.out.println("no customer found for that id");
             return  "no customer found for that id";
         }
-
-
     }
 
     @Override
@@ -77,9 +75,6 @@ public class CustomerServiceIMPL implements CustomerService {
         }else{
             return null;
         }
-
-
-
     }
 
     @Override
@@ -105,8 +100,54 @@ public class CustomerServiceIMPL implements CustomerService {
         }
     }
 
+    @Override
+    public String updateCustomerByName(CustomerDTO customerDTO) {
+        try {
+            Customer customer = customerRepo.findByCustomerName(customerDTO.getCustomerName());
 
+            if (customer != null) {
+                customer.setCustomerAddress(customerDTO.getCustomerAddress());
+                customer.setSalary(customerDTO.getSalary());
+                customerRepo.save(customer);
 
+                return "Customer Updated by Name";
+            } else {
+                return "Customer Not Found by Name";
+            }
+        } catch (Exception e) {
+            return "Update by Name Failed";
+        }
+    }
+    @Override
+    public String deactivateCustomerByName(String customerName) {
+        try {
+            Customer customer = customerRepo.findByCustomerName(customerName);
+
+            if (customer == null) {
+                return "Customer Not Found";
+            }
+
+            customer.setActiveState(false);
+            customerRepo.save(customer);
+
+            return "Customer Deactivated";
+        } catch (Exception e) {
+            return "Deactivation Failed";
+        }
+    }
+
+    @Override
+    public String activateCustomerByName(String customerName) {
+        Customer customer = customerRepo.findByCustomerName(customerName);
+
+        if (customer != null) {
+            customer.setActiveState(true);
+            customerRepo.save(customer);
+            return "Customer Activated";
+        } else {
+            return "Customer Not Found";
+        }
+    }
 
 
 

@@ -59,4 +59,15 @@ public class OrderServiceIMPL implements OrderService {
         }
         return null;
     }
+
+    @Override
+    public boolean updateOrderByCustomers(RequestOrderSaveDTO requestOrderSaveDTO) {
+        return false;
+    }
+
+    @Override
+    public boolean updateOrder(int orderId, RequestOrderSaveDTO requestOrderSaveDTO) {
+        return false;
+    }
+
 }

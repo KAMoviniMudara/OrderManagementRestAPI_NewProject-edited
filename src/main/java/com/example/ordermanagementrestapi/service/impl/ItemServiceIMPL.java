@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ItemServiceIMPL implements ItemService {
     @Autowired
@@ -20,8 +22,9 @@ public class ItemServiceIMPL implements ItemService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
+
     private ItemMapper itemMapper;
+
 
     @Override
     public void addCustomer(RequestItemSaveDTO requestItemSaveDTO) {
@@ -56,6 +59,60 @@ public class ItemServiceIMPL implements ItemService {
         }else {
             throw new NotFoundException("No data found");
         }
+    }
+
+    @Override
+    public String updateItemByName(ItemDTO itemDTO) {
+        Item existingItem = itemRepo.findByItemName(itemDTO.getItemName());
+
+        if (existingItem != null) {
+            existingItem.setBalanceQty(itemDTO.getBalanceQty());
+            existingItem.setSupplierPrice(itemDTO.getSupplierPrice());
+            existingItem.setSellerPrice(itemDTO.getSellerPrice());
+
+            itemRepo.save(existingItem);
+            return "Updated";
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String deactivateItemByName(String itemName) {
+        try {
+            Item item= itemRepo.findByItemName(itemName);
+
+            if (item == null) {
+                return "Item Not Found";
+            }
+
+            item.setActiveState(false);
+            itemRepo.save(item);
+
+            return "Item Deactivated";
+        } catch (Exception e) {
+            return "Deactivation Failed";
+        }
+    }
+
+    @Override
+    public String activateItemByName(String itemName) {
+        Item item = itemRepo.findByItemName(itemName);
+
+        if (item != null) {
+            item.setActiveState(true);
+            itemRepo.save(item);
+            return "Item Activated";
+        } else {
+            return "Item Not Found";
+        }
+    }
+
+    public List<String> getAllItemNames() {
+        List<Item> items = itemRepo.findAll(); // Fetch all items from the database
+        return items.stream()
+                .map(Item::getItemName) // Extract item names from items
+                .collect(Collectors.toList());
     }
 
 

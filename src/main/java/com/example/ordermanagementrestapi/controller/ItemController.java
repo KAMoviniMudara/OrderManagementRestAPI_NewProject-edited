@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/item")
@@ -37,15 +38,40 @@ public class ItemController {
         return itemDTOList;
     }
 
-    @GetMapping(path = "/get-all-item")
-    public ResponseEntity<StandardResponse> getAllItems() {
 
-        List<ItemDTO> itemDTOS = itemService.getAllItems();
 
-        return new ResponseEntity<StandardResponse>(
-                new StandardResponse(200,"SUCCESS",itemDTOS),HttpStatus.OK
-        );
+    @PostMapping(path = "/update-by-name")
+    public String updateItemByName(@RequestBody ItemDTO itemDTO) {
+        String updated = itemService.updateItemByName(itemDTO);
+        if (updated != null) {
+            return "Updated";
+        } else {
+            return "Update Failed";
+        }
     }
+
+    @PatchMapping(path = "/deactivate-item-by-name")
+    public String deactivateItemByName(@RequestBody Map<String, String> requestBody) {
+        String itemName = requestBody.get("itemName");
+
+        String deactivateStatus = itemService.deactivateItemByName(itemName);
+        return deactivateStatus;
+    }
+
+    @PatchMapping(path = "/activate-item-by-name")
+    public String activateItemByName(@RequestBody Map<String, String> requestBody) {
+        String itemName = requestBody.get("itemName");
+
+        String activateStatus = itemService.activateItemByName(itemName);
+        return activateStatus;
+    }
+
+    @GetMapping("/names")
+    public ResponseEntity<List<String>> getItemNames() {
+        List<String> itemNames = itemService.getAllItemNames();
+        return ResponseEntity.ok(itemNames);
+    }
+
 
 
 }
