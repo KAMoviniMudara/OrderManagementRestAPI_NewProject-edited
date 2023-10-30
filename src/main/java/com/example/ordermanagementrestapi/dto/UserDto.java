@@ -1,65 +1,77 @@
 package com.example.ordermanagementrestapi.dto;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 public class UserDto {
+    private static final Logger logger = LoggerFactory.getLogger(UserDto.class);
 
-        private int userId;
+    private int userId;
+    private String userName;
+    private String email;
+    private String password;
+    private String role;
 
-        private String userName;
+    public UserDto(int userId, String userName, String email, String password, String role) {
+        this.userId = userId;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 
-        private String email;
+    public UserDto() {
+    }
 
-        private String password;
+    public int getUserId() {
+        return userId;
+    }
 
-        public UserDto(int userId, String userName, String email, String password) {
-            this.userId = userId;
-            this.userName = userName;
-            this.email = email;
-            this.password = password;
-        }
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-        public UserDto() {
-        }
+    public String getUserName() {
+        return userName;
+    }
 
-        public int getUserId() {
-            return userId;
-        }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-        public void setUserId(int userId) {
-            this.userId = userId;
-        }
+    public String getEmail() {
+        return email;
+    }
 
-        public String getUserName() {
-            return userName;
-        }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-        public void setUserName(String userName) {
-            this.userName = userName;
-        }
+    public String getPassword() {
+        return password;
+    }
 
-        public String getEmail() {
-            return email;
-        }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-        public void setEmail(String email) {
-            this.email = email;
-        }
+    public String getRole() {
+        return role;
+    }
 
-        public String getPassword() {
-            return password;
-        }
+    public void setRole(String role) {
+        this.role = role;
+    }
 
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        @Override
-        public String toString() {
-            return "UserDto{" +
-                    "userId=" + userId +
-                    ", userName='" + userName + '\'' +
-                    ", email='" + email + '\'' +
-                    ", password='" + password + '\'' +
-                    '}';
-        }
-
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }

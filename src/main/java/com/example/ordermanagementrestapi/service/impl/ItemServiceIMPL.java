@@ -8,6 +8,8 @@ import com.example.ordermanagementrestapi.service.ItemService;
 import com.example.ordermanagementrestapi.util.mappers.ItemMapper;
 import com.example.ordermanagementrestapi.exception.NotFoundException;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceIMPL implements ItemService {
+    private static final Logger logger = LoggerFactory.getLogger(ItemServiceIMPL.class);
+
     @Autowired
     private ItemRepo itemRepo;
 
@@ -100,4 +104,3 @@ public class ItemServiceIMPL implements ItemService {
                 .collect(Collectors.toList());
     }
 }
-
