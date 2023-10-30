@@ -3,6 +3,7 @@ package com.example.ordermanagementrestapi.dto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 public class UserDto {
     private static final Logger logger = LoggerFactory.getLogger(UserDto.class);
 
@@ -10,14 +11,14 @@ public class UserDto {
     private String userName;
     private String email;
     private String password;
+    private String role;
 
-    public UserDto(int userId, String userName, String email, String password) {
+    public UserDto(int userId, String userName, String email, String password, String role) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
         this.password = password;
-
-
+        this.role = role;
     }
 
     public UserDto() {
@@ -55,6 +56,14 @@ public class UserDto {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "UserDto{" +
@@ -62,6 +71,7 @@ public class UserDto {
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

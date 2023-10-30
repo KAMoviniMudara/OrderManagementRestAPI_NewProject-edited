@@ -1,13 +1,14 @@
 package com.example.ordermanagementrestapi.Response;
 
 public class LoginResponse {
-    String message;
-    Boolean status;
+    private String message;
+    private boolean status;
+    private String role;
 
-    public LoginResponse(String message, Boolean status) {
+    public LoginResponse(String message, boolean status, String role) {
         this.message = message;
         this.status = status;
-
+        this.role = role;
     }
 
     public String getMessage() {
@@ -18,23 +19,19 @@ public class LoginResponse {
         this.message = message;
     }
 
-    public Boolean getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
-    public LoginResponse() {
+    public String getRole() {
+        return role;
     }
 
-    @Override
-    public String toString() {
-        return "LoginResponse{" +
-                "message='" + message + '\'' +
-                ", status=" + status +
-                '}';
+    public void setRole(String role) {
+        this.role = role;
     }
-
 }
