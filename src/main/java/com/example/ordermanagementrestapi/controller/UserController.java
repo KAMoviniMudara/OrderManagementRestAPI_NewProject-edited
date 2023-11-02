@@ -22,11 +22,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody UserDto userDto) {
         logger.info("Received UserDto email: {}", userDto.getEmail());
-        logger.info("Received UserDto password: {}", userDto.getPassword());
         logger.info("Received UserDto role: {}", userDto.getRole());
 
         String userName = userService.addUser(userDto);
@@ -34,23 +32,16 @@ public class UserController {
 
         return ResponseEntity.ok("Registration successful for user: " + userName);
     }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginDto loginDto) {
+        logger.info("Received login request for email: {}", loginDto.getEmail());
+
         LoginResponse loginResponse = userService.loginUser(loginDto);
-
         if (loginResponse.isStatus()) {
-            String role = loginResponse.getRole();
-
-            if ("ADMIN".equals(role)) {
-                logger.info("User logged in with email: {}", loginDto.getEmail());
-            } else {
-                // User is not an admin, deny login
-                loginResponse.setMessage("You can't login because you're not an admin.");
-                loginResponse.setStatus(false);
-                logger.warn("Login failed for email: {} - Not an admin", loginDto.getEmail());
-            }
+            logger.info("User login successful for email: {}", loginDto.getEmail());
         } else {
-            logger.warn("Login failed for email: {}", loginDto.getEmail());
+            logger.warn("User login failed for email: {}", loginDto.getEmail());
         }
 
         return ResponseEntity.ok(loginResponse);
@@ -60,9 +51,12 @@ public class UserController {
     public ResponseEntity<UserDto> getUserProfile(@AuthenticationPrincipal Principal principal) {
         if (principal != null) {
             String userEmail = principal.getName();
+            logger.info("Retrieved user profile for email: {}", userEmail);
+
             UserDto userDto = userService.getUserByEmail(userEmail);
             return ResponseEntity.ok(userDto);
         } else {
+            logger.warn("User profile request without authenticated principal");
             return ResponseEntity.badRequest().body(null);
         }
     }

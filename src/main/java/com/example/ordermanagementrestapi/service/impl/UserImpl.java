@@ -26,7 +26,15 @@ public class UserImpl implements UserService {
 
     @Override
     public String addUser(UserDto userDto) {
-        User user = new User (
+        String email = userDto.getEmail();
+
+        User existingUser = userRepo.findByEmail(email);
+        if (existingUser != null) {
+            logger.warn("User with email '{}' already exists", email);
+            return "Email already exists";
+        }
+
+        User user = new User(
                 userDto.getUserId(),
                 userDto.getUserName(),
                 userDto.getEmail(),
@@ -35,29 +43,29 @@ public class UserImpl implements UserService {
         );
 
         userRepo.save(user);
-        logger.info("User added: {}", user.getUserName());
         return user.getUserName();
     }
 
     @Override
     public LoginResponse loginUser(LoginDto loginDto) {
-        User user1 = userRepo.findByEmail(loginDto.getEmail());
-        if (user1 != null) {
+        User user = userRepo.findByEmail(loginDto.getEmail());
+
+        if (user != null) {
             String password = loginDto.getPassword();
-            String encodedPassword = user1.getPassword();
+            String encodedPassword = user.getPassword();
             boolean isPwdRight = passwordEncoder.matches(password, encodedPassword);
+
             if (isPwdRight) {
-                Optional<User> user = userRepo.findOneByEmailAndPassword(loginDto.getEmail(), encodedPassword);
-                if (user.isPresent()) {
-                    logger.info("User logged in: {}", user1.getUserName());
-                    return new LoginResponse("Login Success", true, user1.getRole());
+                if ("ADMIN".equals(user.getRole())) {
+                    logger.info("User logged in as ADMIN: {}", user.getUserName());
+                    return new LoginResponse("Login Success", true, "ADMIN");
                 } else {
-                    logger.warn("Login failed for user: {}", user1.getUserName());
-                    return new LoginResponse("Login Failed", false, null);
+                    logger.warn("Login failed for user: {} - Not an admin", user.getUserName());
+                    return new LoginResponse("You are not authorized to access", false, "USER");
                 }
             } else {
-                logger.warn("Password mismatch for user: {}", user1.getUserName());
-                return new LoginResponse("Password Not Match", false, null);
+                logger.warn("Password mismatch for user: {}", user.getUserName());
+                return new LoginResponse("Incorrect Password", false, null);
             }
         } else {
             logger.warn("Email not found: {}", loginDto.getEmail());
