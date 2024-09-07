@@ -3,11 +3,14 @@ package com.example.ordermanagementrestapi.dto;
 public class LoginDto {
     private String email;
     private String password;
+    private String role;
 
-    public LoginDto(String email, String password) {
+    public LoginDto(String email, String password, String role) {
         this.email = email;
         this.password = password;
+        this.role = role;
     }
+
     public LoginDto() {
     }
 
@@ -27,11 +30,20 @@ public class LoginDto {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "LoginDto{" +
                 "email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

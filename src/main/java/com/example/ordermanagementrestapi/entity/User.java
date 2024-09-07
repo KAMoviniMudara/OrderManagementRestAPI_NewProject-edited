@@ -6,24 +6,28 @@ import javax.persistence.*;
 @Table(name = "user")
 public class User {
     @Id
-    @Column(name="user_id",length = 45)
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id", length = 45)
     private int userId;
 
-    @Column(name="user_name",length = 255)
+    @Column(name = "user_name", length = 255)
     private String userName;
 
-    @Column(name="email",length = 255)
+    @Column(name = "email", length = 255)
     private String email;
 
-    @Column(name="password",length = 255)
+    @Column(name = "password", length = 255)
     private String password;
 
-    public User(int userId, String userName, String email, String password) {
+    @Column(name = "role", length = 255)
+    private String role;
+
+    public User(int userId, String userName, String email, String password, String role) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
         this.password = password;
+        this.role = role; // Initialize the 'role' with the provided parameter.
     }
 
     public User() {
@@ -61,6 +65,14 @@ public class User {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -68,9 +80,7 @@ public class User {
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
-
-
 }
-
